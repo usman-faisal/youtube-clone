@@ -1,69 +1,101 @@
 import Image from "next/image";
 import React from "react";
 import styled from "styled-components";
-const StyledNav = styled.nav`
+import {flexCenter} from "@/styles/mixins";
+const StyledHeader = styled.header`
   height: 5.6rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-`;
-const Box = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-`;
-const SearchBox = styled(Box)`
-  form {
-    height: 3rem;
-  }
-  input {
-    border: none;
-    background-color: transparent;
-    box-shadow: 0rem 0rem 0rem 0rem rgba(255, 255, 255, 0.2);
-    &:focus {
-      outline: none;
-    }
-  }
-  button {
-    background-color: rgba(255, 255, 255, 0.3);
-    height: 100%;
-  }
-`;
-const YoutubeLogo = styled(Image)`
-  height: 2rem;
-  width: 100%;
+  padding: 0 1.6rem 0 1.6rem;
+  grid-column: 1/-1;
+  gap: 1.8rem;
 `;
 const MenuIcon = styled(Image)`
   height: 3.4rem;
   width: 3.4rem;
   padding: 0.5rem;
-`;
-const MenuButton = styled.button`
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  display: flex;
-  align-item: center;
-  justify-content: center;
   transition: background-color 0.2s;
   border-radius: 50%;
+  cursor: pointer;
   &:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: ${(props) => props.theme.colorAccent};
   }
 `;
+const MenuButton = styled.button`
+  width: 3.4rem;
+  height: 5.6rem;
+  margin: 0 auto;
+  border: none;
+  background-color: transparent;
+  ${flexCenter};
+`;
+const Box = styled.div`
+  ${flexCenter};
+  gap: 1rem;
+  flex-shrink: 0;
+`;
+const SearchBox = styled.div`
+  ${flexCenter};  
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0px 0px 1px 1px ${(props) => props.theme.colorAccent};
+  flex: 0 1 50rem;
+  min-width: 0;
+  align-items: center;
+  form{
+    flex: 1;
+    display: flex;
+  }
+  input{
+    padding: 0.8rem;
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    flex-shrink: 1;
+    
+    &:focus{
+      outline: none;
+    }
+  }
+  button{
+    align-self: stretch;
+    border: none;
+    ${flexCenter};
+    background-color: ${(props) => props.theme.colorAccent};
+    padding: 0.4rem;
+    cursor: pointer;
+    width: max-content;
+  }
+`
+const YoutubeLogo = styled(Image)`
+  height: 2rem;
+  width: 100%;
+`;
+const SearchIcon= styled(Image)`
+  height: 2rem;
+  width: 6rem;
+`
+const List = styled.ul`
+  ${flexCenter};
+  gap: 1rem;
+  li{
+    cursor: pointer;
+  }
+`
 function Nav() {
   return (
-    <StyledNav>
+    <StyledHeader>
       <Box>
-        <MenuButton>
-          <MenuIcon
-            src="/menu-icon.svg"
-            height={200}
-            width={200}
-            alt="menu icon"
-          />
-        </MenuButton>
+          <MenuButton
+          >
+              <MenuIcon
+                  src="/menu-icon.svg"
+                  height={200}
+                  width={200}
+                  alt="menu icon"
+              />
+          </MenuButton>
         <YoutubeLogo
           src="/youtube-logo.svg"
           height={200}
@@ -71,14 +103,25 @@ function Nav() {
           alt="youtube logo"
         />
       </Box>
-      <SearchBox>
-        <form>
-          <input type="text" />
-        </form>
-        <button>Search</button>
-      </SearchBox>
-      <Box>Nav</Box>
-    </StyledNav>
+        <SearchBox>
+            <form>
+                <input type="text"/>
+            </form>
+            {/*<button>*/}
+            {/*    Search*/}
+            {/*</button>*/}
+            <button>
+            <SearchIcon src="/search-icon.svg" height={200} width={200} alt="search icon"/>
+            </button>
+        </SearchBox>
+      <Box>
+          <List>
+              <li>Contact me</li>
+              <li>Hire me</li>
+              <li>About me</li>
+          </List>
+      </Box>
+    </StyledHeader>
   );
 }
 
