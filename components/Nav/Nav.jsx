@@ -12,8 +12,8 @@ const StyledHeader = styled.header`
   gap: 1.8rem;
 `;
 const MenuIcon = styled(Image)`
-  height: 3.4rem;
-  width: 3.4rem;
+  height: 3.8rem;
+  width: 3.8rem;
   padding: 0.5rem;
   transition: background-color 0.2s;
   border-radius: 50%;
@@ -23,7 +23,7 @@ const MenuIcon = styled(Image)`
   }
 `;
 const MenuButton = styled.button`
-  width: 3.4rem;
+  width: 3.8rem;
   height: 5.6rem;
   margin: 0 auto;
   border: none;
@@ -37,10 +37,11 @@ const Box = styled.div`
 `;
 const SearchBox = styled.div`
   ${flexCenter};  
-  border-radius: 15px;
+  border-radius: 2rem;
   overflow: hidden;
   box-shadow: 0px 0px 1px 1px ${(props) => props.theme.colorAccent};
-  flex: 0 1 50rem;
+  flex: 0 1 60rem;
+  min-height: 70%;
   min-width: 0;
   align-items: center;
   form{
@@ -48,7 +49,7 @@ const SearchBox = styled.div`
     display: flex;
   }
   input{
-    padding: 0.8rem;
+    padding: 0.8rem 1.8rem 0.8rem 1.8rem;
     background-color: transparent;
     border: none;
     width: 100%;
@@ -105,11 +106,8 @@ function Nav() {
       </Box>
         <SearchBox>
             <form>
-                <input type="text"/>
+                <input placeholder="Search" type="text"/>
             </form>
-            {/*<button>*/}
-            {/*    Search*/}
-            {/*</button>*/}
             <button>
             <SearchIcon src="/search-icon.svg" height={200} width={200} alt="search icon"/>
             </button>

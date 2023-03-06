@@ -3,14 +3,12 @@ import styled from "styled-components";
 import Video from "@/components/VideoList/Video/Video";
 
 const Main = styled.main`
-
   display: grid;
   grid-template-columns: repeat(auto-fit,minmax(30rem,1fr));
   column-gap: 2rem;
-  row-gap: 3rem;
+  row-gap: 4rem;
   max-width: 95%;
-  margin: 0 auto;
-  margin-top: 2rem;
+  margin: 5rem auto 5rem auto;
 `
 const VideoList = ({data}) => {
     console.log(data)

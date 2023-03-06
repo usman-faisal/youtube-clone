@@ -15,6 +15,7 @@ function HomePage() {
            setData(response.data.items)
         })()
     },[])
+    console.log(data,'data');
   return (
     <HomeLayout>
         <VideoList data = {data}/>

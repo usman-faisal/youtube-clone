@@ -4,20 +4,20 @@ import Image from "next/image";
 import {flexCenter} from "@/styles/mixins";
 const Wrapper = styled.div`
   grid-column: 1/2;
-  margin-top: 2rem;
 `
 const List = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 1.2rem;
+  font-size: 1rem;
   li{
     ${flexCenter};
     flex-direction: ${props => props.open ? 'row' : 'column'};
     cursor: pointer;
+    gap: 1rem;
     text-align: center;
     width: 100%;
-    height: 6.6rem;
+    height: 7.6rem;
     border-radius: 10px;
     transition: all .2s;
     &:hover{
@@ -27,8 +27,8 @@ const List = styled.ul`
 `
 
 const Logo = styled(Image)`
-  width: 2.2rem;
-  height: 2.2rem;
+  width: 2.4rem;
+  height: 2.4rem;
 `
 const Sidebar = () => {
     return (

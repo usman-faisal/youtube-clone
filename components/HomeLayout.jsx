@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 const Wrapper = styled.div`
     display: grid;
-    grid-template-columns:6.7rem  1fr;
+    grid-template-columns:7.1rem  1fr;
     grid-template-rows: max-content 1fr;
 `
 const HomeLayout = ({children}) => {

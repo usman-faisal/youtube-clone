@@ -1,26 +1,32 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Image from "next/image";
 import styled from "styled-components";
+import Details from "@/components/VideoList/Video/Details";
+import axios from "@/api/axios";
+import Link from "next/link";
 
 const Wrapper = styled.div`
   position: relative;
-  width: 100%;
 `
 const StyledImage = styled(Image)`
   height: auto;
-  max-height: 30rem;
   object-fit: cover;
   width: 100%;
   border-radius: 10px;
   background-color: ${props => props.theme.colorBg};
 `
-const Video = ({title,thumbnails: {high: {url,width,height}}}) => {
+const StyledLink = styled(Link)`
+  
+`
+const Video = ({title,thumbnails,channelId}) => {
+    if(!thumbnails.maxres) return;
+    const {url,height,width} = thumbnails.maxres;
     return (
         <Wrapper>
-            <a>
-            <StyledImage src={url} blurDataURL={url} placeholder="blur" alt={title} width={width} height={height} />
-            <h3>{title}</h3>
-            </a>
+            <StyledLink href="/test">
+            <StyledImage priority src={url} alt={title} width={width} height={height} />
+            <Details title={title}/>
+            </StyledLink>
         </Wrapper>
     );
 };
