@@ -24,7 +24,7 @@ const Video = ({title,thumbnails,channelId}) => {
     return (
         <Wrapper>
             <StyledLink href="/test">
-            <StyledImage priority src={url} alt={title} width={width} height={height} />
+            <StyledImage loading="lazy" src={url} alt={title} width={width} height={height} />
             <Details title={title}/>
             </StyledLink>
         </Wrapper>

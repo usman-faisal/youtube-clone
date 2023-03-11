@@ -2,51 +2,65 @@ import React from 'react';
 import styled from "styled-components";
 import Image from "next/image";
 import {flexCenter} from "@/styles/mixins";
+import useSidebarState from "@/store/useSidebarState";
 const Wrapper = styled.div`
-  grid-column: 1/2;
+  position: fixed;
+  top: ${props => props.isOpen ? "7.2rem" : "6rem"};
+  left: 0;
+  height: 100vh;
+  z-index: 100;
+  margin-top: 1.8rem;
+  width:${props => props.isOpen ? "20.2rem": "7.2rem" };
 `
 const List = styled.ul`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 1rem;
-  li{
+  font-size: ${props => props.isOpen ? `1.6rem` : `1rem`};
+`
+const ListItem = styled.ul`
     ${flexCenter};
-    flex-direction: ${props => props.open ? 'row' : 'column'};
+    flex-direction: ${props => props.isOpen ? 'row' : 'column'};
+    align-items: center;
+    justify-content: ${props =>props.isOpen ? "flex-start" : "center"};
     cursor: pointer;
-    gap: 1rem;
     text-align: center;
     width: 100%;
-    height: 7.6rem;
+    
+    height: ${props=> props.isOpen ? "4rem" : "7.6rem"};
     border-radius: 10px;
-    transition: all .2s;
+    transition: background-color .2s;
+    background-color: ${props => props.isActive && props.isOpen ? props.theme.colorAccent : 'inherit'};
+    img{
+      flex-basis: ${props => props.isOpen && "7.2rem"};
+    }
     &:hover{
       background-color: ${props => props.theme.colorAccent};
     }
-  }
 `
 
 const Logo = styled(Image)`
-  width: 2.4rem;
+  width: auto;
   height: 2.4rem;
 `
 const Sidebar = () => {
+    const {isOpen} = useSidebarState();
     return (
-
-            <Wrapper>
-                <List>
-                    <li>
-                        <Logo src="/home-icon.svg" width={200} height={200} alt="home icon"/>
+            <Wrapper isOpen={isOpen}>
+                <List isOpen={isOpen}>
+                    <ListItem isActive={true} isOpen={isOpen}>
+                        <Logo  src="/home-icon.svg" width={200} height={200} alt="home icon"/>
                         <a>Home</a>
-                    </li>
-                    <li>
-                        <Logo src="/trending.svg" width={200} height={200} alt="trending icon" />
+                    </ListItem>
+                    <ListItem isOpen={isOpen}>
+                        <Logo  src="/trending.svg" width={200} height={200} alt="trending icon" />
                         <a>Trending</a>
-                    </li>
-                    <li>
-                        <Logo src="/music.svg" width={200} height={200} alt="music icon"/>
+                    </ListItem>
+                    <ListItem isOpen={isOpen}>
+                        <Logo  src="/music.svg" width={200} height={200} alt="music icon"/>
                         <a>Music</a>
-                    </li>
+                    </ListItem>
                 </List>
             </Wrapper>
     );

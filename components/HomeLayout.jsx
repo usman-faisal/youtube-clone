@@ -2,19 +2,21 @@ import React from 'react';
 import Nav from "@/components/Nav/Nav";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import styled from "styled-components";
+import useSidebarState from "@/store/useSidebarState";
 
 const Wrapper = styled.div`
-    display: grid;
-    grid-template-columns:7.1rem  1fr;
-    grid-template-rows: max-content 1fr;
+  margin: 10rem 0 0 ${(props) => props.isOpen ? '21rem' : '8rem'};
 `
 const HomeLayout = ({children}) => {
+    const {isOpen} = useSidebarState();
     return (
-        <Wrapper>
+        <>
             <Nav />
             <Sidebar />
-            {children}
-        </Wrapper>
+            <Wrapper isOpen={isOpen}>
+                {children}
+            </Wrapper>
+        </>
     );
 };
 

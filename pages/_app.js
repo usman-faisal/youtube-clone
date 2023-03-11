@@ -1,6 +1,7 @@
-import { createGlobalStyle, ThemeProvider } from "styled-components";
+import {  ThemeProvider } from "styled-components";
 import Head from "next/head";
 import {GlobalStyle,theme} from "@/styles/global";
+
 
 export default function App({ Component, pageProps }) {
   return (
