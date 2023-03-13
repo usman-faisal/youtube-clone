@@ -18,5 +18,8 @@
     "react-dom": "18.2.0",
     "styled-components": "^5.3.8",
     "zustand": "^4.3.6"
+  },
+  "devDependencies": {
+    "prettier": "2.8.4"
   }
 }
