@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import HomeLayout from "@/components/HomeLayout";
 import VideoList from "@/components/VideoList/VideoList";
-import useFetchVideoList from "@/hooks/useFetchVideoList";
 import axios from "@/api/axios";
 
 function HomePage() {
@@ -36,7 +35,7 @@ function HomePage() {
   const sendQuery = useCallback(async () => {
     try {
       const response = await axios.get(
-        `/videos?part=snippet&pageToken=${pageTokens.currentPageToken}&chart=mostPopular&maxResults=20&key=AIzaSyBl6XVFxHVUlmmojo_drPqC67XBc4NoRSI`
+        `/videos?part=snippet&pageToken=${pageTokens.currentPageToken}&chart=mostPopular&maxResults=20&key=${process.env.API_KEY}`
       );
       setData((prev) => [...prev, ...response.data.items]);
       setLoading(false);

@@ -5,12 +5,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  min-height: 21.1rem;
+  min-height: 20.2rem;
 `;
 const ImageBox = styled.div`
   width: 100%;
   flex: 1;
-  height: 100%;
   background-color: ${(props) => props.theme.colorAccent};
   object-fit: cover;
   border-radius: 10px;

@@ -36,7 +36,7 @@ const Details = ({ title, channelId, channelTitle }) => {
   useEffect(() => {
     (async () => {
       const response = await axios.get(
-        `/channels?part=snippet%2CcontentDetails%2Cstatistics&id=${channelId}&key=AIzaSyBl6XVFxHVUlmmojo_drPqC67XBc4NoRSI`
+        `/channels?part=snippet%2CcontentDetails%2Cstatistics&id=${channelId}&key=${process.env.API_KEY}`
       );
       setChannelUrl(response.data.items[0].snippet.thumbnails.high.url);
     })();
