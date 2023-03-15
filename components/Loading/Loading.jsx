@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { IM_Fell_Double_Pica } from "next/dist/compiled/@next/font/dist/google";
 const Container = styled.div`
   width: 100%;
   display: flex;

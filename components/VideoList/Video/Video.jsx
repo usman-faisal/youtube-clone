@@ -32,6 +32,8 @@ const Video = ({ title, thumbnails, channelId, channelTitle }) => {
           alt={title}
           width={width}
           height={height}
+          blurDataURL="/img-placeholder.svg"
+          placeholder="blur"
         />
         <Details
           channelTitle={channelTitle}

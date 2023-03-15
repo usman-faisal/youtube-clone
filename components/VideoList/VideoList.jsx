@@ -31,6 +31,11 @@ const VideoList = ({ data }) => {
       {data.map((item, index) => {
         return <Video key={item.etag} {...item.snippet} />;
       })}
+      {Array(3)
+        .fill(0)
+        .map((_, index) => {
+          return <Loading key={index} />;
+        })}
     </Main>
   );
 };

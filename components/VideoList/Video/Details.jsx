@@ -49,6 +49,8 @@ const Details = ({ title, channelId, channelTitle }) => {
           src={channelUrl}
           width={80}
           height={80}
+          placeholder="blur"
+          blurDataURL="/img-placeholder.svg"
         />
       ) : (
         <ChannelLogoDiv as="div" />
