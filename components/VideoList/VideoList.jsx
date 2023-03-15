@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Video from "@/components/VideoList/Video/Video";
+import Loading from "@/components/Loading/Loading";
 
 const Main = styled.main`
   display: grid;
@@ -13,7 +14,18 @@ const Main = styled.main`
   z-index: 0;
 `;
 const VideoList = ({ data }) => {
-  console.log(data);
+  if (data.length === 0) {
+    return (
+      <Main>
+        {Array(20)
+          .fill(0)
+          .map((_, index) => {
+            return <Loading key={index} />;
+          })}
+        )
+      </Main>
+    );
+  }
   return (
     <Main>
       {data.map((item, index) => {
