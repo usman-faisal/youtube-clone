@@ -2,15 +2,18 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import HomeLayout from "@/components/HomeLayout";
 import VideoList from "@/components/VideoList/VideoList";
 import axios from "@/api/axios";
+import useCategoryItem from "@/store/useCategoryItem";
+import useFetch from "@/hooks/useFetch";
 
 function HomePage() {
   const loaderRef = useRef(null);
+  const { isActive } = useCategoryItem();
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [pageTokens, setPageTokens] = useState({
     nextPageToken: "",
     currentPageToken: "",
   });
+  const [query, setQuery] = useState("");
   const handleObserver = useCallback(
     (entries) => {
       const target = entries[0];
@@ -35,10 +38,11 @@ function HomePage() {
   const sendQuery = useCallback(async () => {
     try {
       const response = await axios.get(
-        `/videos?part=snippet&pageToken=${pageTokens.currentPageToken}&chart=mostPopular&maxResults=20&key=${process.env.API_KEY}`
+        `/videos?part=snippet&pageToken=${pageTokens.currentPageToken}&${
+          isActive && `videoCategoryId=${isActive}`
+        }&chart=mostPopular&maxResults=25&key=${process.env.API_KEY}`
       );
       setData((prev) => [...prev, ...response.data.items]);
-      setLoading(false);
       setPageTokens((state) => ({
         nextPageToken: response.data.nextPageToken,
         currentPageToken: state.currentPageToken,
@@ -46,10 +50,15 @@ function HomePage() {
     } catch (err) {
       console.log(err);
     }
-  }, [pageTokens.currentPageToken]);
+  }, [pageTokens.currentPageToken, isActive]);
+  const clearPrevData = useCallback(() => {
+    console.log(isActive);
+    setData([]);
+  }, [isActive]);
+  useEffect(() => clearPrevData(), [isActive]);
   useEffect(() => {
     sendQuery().then((res) => {});
-  }, [pageTokens.currentPageToken, sendQuery]);
+  }, [pageTokens.currentPageToken, sendQuery, isActive]);
   return (
     <HomeLayout>
       <VideoList data={data} />

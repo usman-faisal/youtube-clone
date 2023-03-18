@@ -45,5 +45,5 @@ export const theme = {
   colorBg: "#0f0f0f",
   colorText: "#FFFFFF",
   colorPrimary: "#FF0000",
-  colorAccent: "rgba(255, 255, 255, 0.2)",
+  colorAccent: "rgba(255, 255, 255, 0.1)",
 };

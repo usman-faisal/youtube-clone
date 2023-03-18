@@ -10,19 +10,18 @@ const Main = styled.main`
   column-gap: 2rem;
   row-gap: 4rem;
   max-width: 95%;
-  margin: 5rem auto 5rem auto;
+  margin: 2.2rem auto 5rem auto;
   z-index: 0;
 `;
 const VideoList = ({ data }) => {
   if (data.length === 0) {
     return (
       <Main>
-        {Array(20)
+        {Array(25)
           .fill(0)
           .map((_, index) => {
             return <Loading key={index} />;
           })}
-        )
       </Main>
     );
   }
