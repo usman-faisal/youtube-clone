@@ -26,7 +26,7 @@ const Viewsbox = styled.div`
   background-color: ${(props) => props.theme.colorAccent};
   border-radius: 2px;
 `;
-const Loading = () => {
+const VideoSkeleton = () => {
   return (
     <Container>
       <ImageBox />
@@ -36,4 +36,4 @@ const Loading = () => {
   );
 };
 
-export default Loading;
+export default VideoSkeleton;

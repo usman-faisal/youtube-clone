@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "@/api/axios";
 
 function useFetch(query) {
-  const [data, setData] = useState(null);
+  const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   useEffect(() => {
@@ -12,7 +12,7 @@ function useFetch(query) {
         await setLoading(false);
         await setError(false);
         const response = await axios.get(query);
-        await setData(response.data);
+        await setResponse(response.data);
       } catch (err) {
         setLoading(false);
         setError(true);
@@ -22,6 +22,6 @@ function useFetch(query) {
       };
     })();
   }, [query]);
-  return { data, loading, error };
+  return { response, loading, error };
 }
 export default useFetch;
