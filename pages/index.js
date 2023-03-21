@@ -3,7 +3,6 @@ import HomeLayout from "@/components/HomeLayout";
 import VideoList from "@/components/VideoList/VideoList";
 import axios from "@/api/axios";
 import useCategoryItem from "@/store/useCategoryItem";
-import useFetch from "@/hooks/useFetch";
 import LoadingVideos from "@/components/LoadingVideos/LoadingVideos";
 import Error from "@/components/Error/Error";
 
@@ -11,6 +10,7 @@ function HomePage() {
   const loaderRef = useRef(null);
   const { isActive } = useCategoryItem();
   const [data, setData] = useState([]);
+  const [error, setError] = useState(false);
   const [pageTokens, setPageTokens] = useState({
     nextPageToken: "",
     currentPageToken: "",
@@ -39,12 +39,14 @@ function HomePage() {
   }, [pageTokens.nextPageToken, handleObserver]);
   const sendQuery = useCallback(async () => {
     try {
+      await setError(false);
       const response = await axios.get(
         `/videos?part=snippet&pageToken=${pageTokens.currentPageToken}&${
           isActive && `videoCategoryId=${isActive}`
         }&chart=mostPopular&maxResults=25&key=${process.env.API_KEY}`
       );
       await setLoading(false);
+
       console.log(response.data);
       setData((prev) => [...prev, ...response.data.items]);
       setPageTokens((state) => ({
@@ -53,6 +55,7 @@ function HomePage() {
       }));
     } catch (err) {
       await setLoading(false);
+      await setError(true);
       console.log(err);
     }
   }, [pageTokens.currentPageToken, isActive]);
@@ -65,12 +68,12 @@ function HomePage() {
   useEffect(() => {
     sendQuery().then((res) => {});
   }, [pageTokens.currentPageToken, sendQuery, isActive]);
-
+  console.log(data.length);
   return (
     <HomeLayout>
-      {!loading && data.length === 0 && <Error />}
-      {!loading && data.length !== 0 && <VideoList data={data} />}
+      {error && <Error />}
       {loading && <LoadingVideos />}
+      {!loading && data.length !== 0 && <VideoList data={data} />}
       <div ref={loaderRef} />
     </HomeLayout>
   );

@@ -6,7 +6,7 @@ import VideoSkeleton from "@/components/LoadingVideos/VideoSkeleton";
 
 const Main = styled.main`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(33rem, 1fr));
   grid-auto-rows: 1fr;
   column-gap: 2rem;
   row-gap: 4rem;
