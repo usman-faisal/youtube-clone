@@ -5,70 +5,50 @@ import axios from "@/api/axios";
 import useCategoryItem from "@/store/useCategoryItem";
 import LoadingVideos from "@/components/LoadingVideos/LoadingVideos";
 import Error from "@/components/Error/Error";
+import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 
 function HomePage() {
   const loaderRef = useRef(null);
   const { isActive } = useCategoryItem();
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);
-  const [pageTokens, setPageTokens] = useState({
-    nextPageToken: "",
-    currentPageToken: "",
-  });
   const [loading, setLoading] = useState(true);
-  const handleObserver = useCallback(
-    (entries) => {
-      const target = entries[0];
-      if (target.isIntersecting) {
-        setPageTokens((state) => ({
-          nextPageToken: state.nextPageToken,
-          currentPageToken: state.nextPageToken,
-        }));
-      }
-    },
-    [pageTokens.nextPageToken]
-  );
-  useEffect(() => {
-    const option = {
-      root: null,
-      rootMargin: "100px",
-      threshold: 0.5,
-    };
-    const observer = new IntersectionObserver(handleObserver, option);
-    if (loaderRef.current) observer.observe(loaderRef.current);
-  }, [pageTokens.nextPageToken, handleObserver]);
-  const sendQuery = useCallback(async () => {
-    try {
-      await setError(false);
-      const response = await axios.get(
-        `/videos?part=snippet&pageToken=${pageTokens.currentPageToken}&${
+  let pageToken = "";
+  const isIntersecting = useIntersectionObserver(loaderRef);
+  const sendQuery = useCallback(() => {
+    axios
+      .get(
+        `/videos?part=snippet&pageToken=${pageToken}&${
           isActive && `videoCategoryId=${isActive}`
         }&chart=mostPopular&maxResults=25&key=${process.env.API_KEY}`
-      );
-      await setLoading(false);
-
-      console.log(response.data);
-      setData((prev) => [...prev, ...response.data.items]);
-      setPageTokens((state) => ({
-        nextPageToken: response.data.nextPageToken,
-        currentPageToken: state.currentPageToken,
-      }));
-    } catch (err) {
-      await setLoading(false);
-      await setError(true);
-      console.log(err);
-    }
-  }, [pageTokens.currentPageToken, isActive]);
+      )
+      .then((response) => {
+        setError(false);
+        setLoading(false);
+        pageToken = response.data.nextPageToken;
+        console.log(response.data);
+        setData((prev) => [...prev, ...response.data.items]);
+      })
+      .catch((err) => {
+        setLoading(false);
+        setError(true);
+        console.log(err);
+      });
+  }, [isActive]);
   const clearPrevData = useCallback(() => {
-    setPageTokens(() => ({ currentPageToken: "", nextPageToken: "" }));
+    pageToken = "";
     setLoading(true);
     setData([]);
   }, [isActive]);
-  useEffect(() => clearPrevData(), [isActive]);
   useEffect(() => {
-    sendQuery().then((res) => {});
-  }, [pageTokens.currentPageToken, sendQuery, isActive]);
-  console.log(data.length);
+    if (isIntersecting) {
+      sendQuery();
+    }
+  }, [sendQuery, isIntersecting]);
+  useEffect(() => {
+    sendQuery();
+    clearPrevData();
+  }, [clearPrevData, sendQuery, isActive]);
   return (
     <HomeLayout>
       {error && <Error />}
