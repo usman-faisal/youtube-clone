@@ -1,12 +1,9 @@
 import React from "react";
-import styled from "styled-components";
-import Video from "@/components/VideoList/Video/Video";
-import LoadingVideos from "@/components/LoadingVideos/LoadingVideos";
 import VideoSkeleton from "@/components/LoadingVideos/VideoSkeleton";
-
+import styled from "styled-components";
 const Main = styled.main`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(33rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
   grid-auto-rows: 1fr;
   column-gap: 2rem;
   row-gap: 4rem;
@@ -14,13 +11,10 @@ const Main = styled.main`
   margin: 2.2rem auto 5rem auto;
   z-index: 0;
 `;
-const VideoList = ({ data }) => {
+const LoadingVideos = () => {
   return (
     <Main>
-      {data.map((item) => {
-        return <Video key={item.etag} {...item.snippet} />;
-      })}
-      {Array(4)
+      {Array(25)
         .fill(0)
         .map((_, index) => {
           return <VideoSkeleton key={index} />;
@@ -29,4 +23,4 @@ const VideoList = ({ data }) => {
   );
 };
 
-export default VideoList;
+export default LoadingVideos;

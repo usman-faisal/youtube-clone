@@ -2,60 +2,61 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import HomeLayout from "@/components/HomeLayout";
 import VideoList from "@/components/VideoList/VideoList";
 import axios from "@/api/axios";
+import useCategoryItem from "@/store/useCategoryItem";
+import LoadingVideos from "@/components/LoadingVideos/LoadingVideos";
+import Error from "@/components/Error/Error";
+import useIntersectionObserver from "@/hooks/useIntersectionObserver";
 
 function HomePage() {
   const loaderRef = useRef(null);
+  const { isActive } = useCategoryItem();
   const [data, setData] = useState([]);
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [pageTokens, setPageTokens] = useState({
-    nextPageToken: "",
-    currentPageToken: "",
-  });
-  const handleObserver = useCallback(
-    (entries) => {
-      const target = entries[0];
-      if (target.isIntersecting) {
-        setPageTokens((state) => ({
-          nextPageToken: state.nextPageToken,
-          currentPageToken: state.nextPageToken,
-        }));
-      }
-    },
-    [pageTokens.nextPageToken]
-  );
+  let pageToken = "";
+  const isIntersecting = useIntersectionObserver(loaderRef);
+  const sendQuery = useCallback(() => {
+    axios
+      .get(
+        `/videos?part=snippet&pageToken=${pageToken}&${
+          isActive && `videoCategoryId=${isActive}`
+        }&chart=mostPopular&maxResults=25&key=${process.env.API_KEY}`
+      )
+      .then((response) => {
+        setError(false);
+        setLoading(false);
+        pageToken = response.data.nextPageToken;
+        console.log(response.data);
+        setData((prev) => [...prev, ...response.data.items]);
+      })
+      .catch((err) => {
+        setLoading(false);
+        setError(true);
+        console.log(err);
+      });
+  }, [isActive]);
+  const clearPrevData = useCallback(() => {
+    pageToken = "";
+    setData([]);
+    sendQuery();
+  }, [isActive]);
   useEffect(() => {
-    const option = {
-      root: null,
-      rootMargin: "100px",
-      threshold: 0.5,
-    };
-    const observer = new IntersectionObserver(handleObserver, option);
-    if (loaderRef.current) observer.observe(loaderRef.current);
-  }, [pageTokens.nextPageToken, handleObserver]);
-  const sendQuery = useCallback(async () => {
-    try {
-      const response = await axios.get(
-        `/videos?part=snippet&pageToken=${pageTokens.currentPageToken}&chart=mostPopular&maxResults=20&key=${process.env.API_KEY}`
-      );
-      setData((prev) => [...prev, ...response.data.items]);
-      setLoading(false);
-      setPageTokens((state) => ({
-        nextPageToken: response.data.nextPageToken,
-        currentPageToken: state.currentPageToken,
-      }));
-    } catch (err) {
-      console.log(err);
+    if (isIntersecting) {
+      sendQuery();
     }
-  }, [pageTokens.currentPageToken]);
+  }, [sendQuery, isIntersecting]);
   useEffect(() => {
-    sendQuery().then((res) => {});
-  }, [pageTokens.currentPageToken, sendQuery]);
+    setLoading(true);
+    setError(false);
+    clearPrevData();
+  }, [clearPrevData, sendQuery, isActive]);
   return (
     <HomeLayout>
-      <VideoList data={data} />
+      {error && <Error />}
+      {loading && <LoadingVideos />}
+      {!loading && data.length !== 0 && <VideoList data={data} />}
       <div ref={loaderRef} />
     </HomeLayout>
   );
 }
-
 export default HomePage;
