@@ -37,8 +37,8 @@ function HomePage() {
   }, [isActive]);
   const clearPrevData = useCallback(() => {
     pageToken = "";
-    setLoading(true);
     setData([]);
+    sendQuery();
   }, [isActive]);
   useEffect(() => {
     if (isIntersecting) {
@@ -46,7 +46,8 @@ function HomePage() {
     }
   }, [sendQuery, isIntersecting]);
   useEffect(() => {
-    sendQuery();
+    setLoading(true);
+    setError(false);
     clearPrevData();
   }, [clearPrevData, sendQuery, isActive]);
   return (
@@ -58,5 +59,4 @@ function HomePage() {
     </HomeLayout>
   );
 }
-
 export default HomePage;
